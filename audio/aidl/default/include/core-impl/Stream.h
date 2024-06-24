@@ -589,10 +589,10 @@ ndk::ScopedAStatus createStreamInstance(std::shared_ptr<StreamInOrOut>* result, 
 class StreamWrapper {
   public:
     explicit StreamWrapper(const std::shared_ptr<StreamIn>& streamIn)
-        : mStream(streamIn), mStreamBinder(streamIn->asBinder()) {}
+        : mStream(streamIn) {}
     explicit StreamWrapper(const std::shared_ptr<StreamOut>& streamOut)
-        : mStream(streamOut), mStreamBinder(streamOut->asBinder()) {}
-    ndk::SpAIBinder getBinder() const { return mStreamBinder; }
+        : mStream(streamOut) {}
+
     bool isStreamOpen() const {
         auto s = mStream.lock();
         return s && !s->isClosed();
@@ -611,7 +611,6 @@ class StreamWrapper {
 
   private:
     std::weak_ptr<StreamCommonInterface> mStream;
-    ndk::SpAIBinder mStreamBinder;
 };
 
 class Streams {
